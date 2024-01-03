@@ -1,1 +1,8 @@
-{{products}}
+<table>
+    {% for product in products %}
+    <tr>
+        <td><a href="{% url 'detail' product.id %}"> {{product.title}} </a></td>
+        <td><a href="{% url 'add_to_cart' product.id %}"> Add to cart </a></td>
+    </tr>
+    {% endfor %}
+</table>
