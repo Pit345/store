@@ -1,0 +1,5 @@
+{% for product in products_user %}
+    <p>{{ product.product.id }}.{{ product.product.title }}</p>
+{% endfor %}
+
+<a href="{% url 'index' %}"> Back </a>
