@@ -1,0 +1,7 @@
+<table>
+    {% for category in categories %}
+        <tr>
+            <td><a href=" { url 'index' } ">{{category.name.capitalize}}</a></td>
+        </tr>
+    {% endfor %}
+</table>

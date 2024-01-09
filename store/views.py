@@ -4,13 +4,12 @@ from django.contrib import messages
 
 # Create your views here.
 
-def category_list(request):
+def all_categories(request):
     categories = Category.objects.all()
-    return render(request, 'store/index.html', {'categories': categories})
+    return render(request, 'store/categories.html', {'categories': categories})
 
-def index(request):
-    products = Product.objects.all()
-    return render(request, 'store/index.html', {'products': products})
+def products_category(request):
+    ...
 
 def show(request, product_id):
     product = Product.objects.get(id=product_id)
