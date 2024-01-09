@@ -1,9 +1,12 @@
 from django.shortcuts import render, HttpResponse, redirect
-from store.models import Product, User, CartItem
+from store.models import Product, User, CartItem, Category
 from django.contrib import messages
 
-
 # Create your views here.
+
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'store/index.html', {'categories': categories})
 
 def index(request):
     products = Product.objects.all()
