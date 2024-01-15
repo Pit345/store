@@ -1,7 +1,11 @@
-<table>
+<table class="text">
     {% for category in categories %}
-        <tr>
-            <td><a href=" { url 'index' } ">{{category.name.capitalize}}</a></td>
-        </tr>
+    <tr>
+        <td><a href="{% url 'products_category' category.name %}">{{category.name.upper}}</a></td>
+    </tr>
     {% endfor %}
 </table>
+
+{% if user.is_authenticated %}
+    <p align="right"> <a href="{% url 'logout_view' %}"> Logout </a> </p>    
+{% endif %}

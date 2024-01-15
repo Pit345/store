@@ -1,0 +1,18 @@
+{% if messages %}
+    {% for message in messages %}
+        <i>{{message}}</i>
+    {% endfor %}
+{% endif %}
+
+<table>
+    {% for product in products %}
+        <tr>
+            <td><a href=" {% url 'view_product' product.id %} ">{{product.title }}</a></td>
+            <td><a href=" {% url 'add_to_cart' product.id %} ">Add to cart</a></td>
+        </tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'all_categories' %}"> Back </a>
+
+<p align="right"> <a href="{% url 'my_cart' %} "> My cart </a></p>

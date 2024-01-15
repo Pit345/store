@@ -6,6 +6,10 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
+    def name_modify(self):
+        if self.name.startswith('s'):
+            return self.name + "SSS"
+
 class Product(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()

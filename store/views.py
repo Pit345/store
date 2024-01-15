@@ -1,6 +1,8 @@
 from django.shortcuts import render, HttpResponse, redirect
 from store.models import Product, User, CartItem, Category
 from django.contrib import messages
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -8,25 +10,28 @@ def all_categories(request):
     categories = Category.objects.all()
     return render(request, 'store/categories.html', {'categories': categories})
 
-def products_category(request):
-    ...
-
-def show(request, product_id):
+def products_category(request, category_name):
+    category = Category.objects.get(name=category_name)
+    products = category.product_set.all()
+    return render(request, 'store/products_category.html', {'products': products})
+    
+def view_product(request, product_id):
     product = Product.objects.get(id=product_id)
-    return render(request, 'store/show.html', {'product': product})
+    return render(request, 'store/view_product.html', {'product': product})
 
+@login_required
 def add_to_cart(request, product_id):
     if not request.user.is_authenticated:
-        return redirect('index')
+        return redirect(reverse('signin'))
     else:
         product = Product.objects.get(id=product_id)
-        cartitem = CartItem.objects.create(user= request.user, product=product)
-        messages.add_message(request, messages.SUCCESS, "Item added to cart")   
-        return redirect('index')
+        cartitem = CartItem.objects.create(user=request.user, product=product)
+        messages.success(request, "Product add to cart!")
+        return redirect(reverse('products_category', args=(product.category.name,)))
 
 def my_cart(request):   
     if not request.user.is_authenticated:
-        return redirect('index')
+        return redirect('all_categories')
     else:
         products_user = CartItem.objects.filter(user_id=request.user.id)
         return render(request, 'store/my_cart.html', {'products_user': products_user})
