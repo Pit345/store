@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
-from store.models import Product, User, CartItem, Category
+from store.models import Product, User, CartItem, Category, Cart
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -19,19 +19,17 @@ def view_product(request, product_id):
     product = Product.objects.get(id=product_id)
     return render(request, 'store/view_product.html', {'product': product})
 
-@login_required
 def add_to_cart(request, product_id):
     if not request.user.is_authenticated:
         return redirect(reverse('signin'))
     else:
+        cart = Cart.objects.get_or_create(user_id=request.user.id)
         product = Product.objects.get(id=product_id)
-        cartitem = CartItem.objects.create(user=request.user, product=product)
+        cartitem = CartItem.objects.create(cart=cart, product=product)
         messages.success(request, "Product add to cart!")
         return redirect(reverse('products_category', args=(product.category.name,)))
 
-def my_cart(request):   
-    if not request.user.is_authenticated:
-        return redirect('all_categories')
-    else:
-        products_user = CartItem.objects.filter(user_id=request.user.id)
-        return render(request, 'store/my_cart.html', {'products_user': products_user})
+def my_cart(request):
+    my_cart = Cart.objects.get_or_create(user=request.user.id)
+    breakpoint()
+    return render(request, 'store/my_cart.html', {'my_cart': my_cart})
