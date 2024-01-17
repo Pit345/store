@@ -23,13 +23,12 @@ def add_to_cart(request, product_id):
     if not request.user.is_authenticated:
         return redirect(reverse('signin'))
     else:
-        cart = Cart.objects.get_or_create(user_id=request.user.id)
+        cart_obj, cart_create = Cart.objects.get_or_create(user = request.user.id)
         product = Product.objects.get(id=product_id)
-        cartitem = CartItem.objects.create(cart=cart, product=product)
+        cartitem = CartItem.objects.create(cart=cart_obj or cart_create, product=product)
         messages.success(request, "Product add to cart!")
         return redirect(reverse('products_category', args=(product.category.name,)))
 
 def my_cart(request):
     my_cart = Cart.objects.get_or_create(user=request.user.id)
-    breakpoint()
     return render(request, 'store/my_cart.html', {'my_cart': my_cart})
