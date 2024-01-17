@@ -30,5 +30,6 @@ def add_to_cart(request, product_id):
         return redirect(reverse('products_category', args=(product.category.name,)))
 
 def my_cart(request):
-    my_cart = Cart.objects.get_or_create(user=request.user.id)
-    return render(request, 'store/my_cart.html', {'my_cart': my_cart})
+    my_cart = Cart.objects.get(user=request.user.id)    
+    products_cart = CartItem.objects.filter(cart=my_cart.id)
+    return render(request, 'store/my_cart.html', {'products_cart': products_cart})
