@@ -7,7 +7,7 @@ class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def name_to_url(self):
         return self.name.replace(' ', '-')

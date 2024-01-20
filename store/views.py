@@ -21,16 +21,20 @@ def view_product(request, product_id):
     return render(request, 'store/view_product.html', {'product': product})
 
 def add_to_cart(request, product_id):
+    #breakpoint()
     if not request.user.is_authenticated:
         return redirect(reverse('signin'))
     else:
-        cart_obj, cart_create = Cart.objects.get_or_create(user = request.user.id)
+        cart_obj, cart_create = Cart.objects.get_or_create(user = request.user)
         product = Product.objects.get(id=product_id)
         cartitem = CartItem.objects.create(cart=cart_obj or cart_create, product=product)
         messages.success(request, "Product add to cart!")
         return redirect(reverse('products_category', args=(product.category.name,)))
 
 def my_cart(request):
-    my_cart = Cart.objects.get(user=request.user.id)    
-    products_cart = CartItem.objects.filter(cart=my_cart.id)
-    return render(request, 'store/my_cart.html', {'products_cart': products_cart})
+    if not request.user.is_authenticated:
+        return redirect(reverse('signin'))
+    else:
+        my_cart = Cart.objects.get(user=request.user.id)    
+        products_cart = CartItem.objects.filter(cart=my_cart.id)
+        return render(request, 'store/my_cart.html', {'products_cart': products_cart})

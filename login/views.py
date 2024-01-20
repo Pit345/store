@@ -12,7 +12,8 @@ def signup(request):
         if user_form.is_valid():
             username = user_form.cleaned_data.get('username')
             password = user_form.cleaned_data.get('password')
-            User.objects.create_user(username=username, password=password)
+            user = User.objects.create_user(username=username, password=password)
+            login(request, user)
         return redirect('all_categories')
     else:
         user_form = UserForm()
