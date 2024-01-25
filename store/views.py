@@ -26,14 +26,11 @@ def add_to_cart(request, product_id):
     else:
         cart_obj, cart_create = Cart.objects.get_or_create(user = request.user)
         product = Product.objects.get(id=product_id)
-        
         cartitem, cartitem_create = CartItem.objects.get_or_create(cart=cart_obj, product=product)
-
         if CartItem.objects.contains(cartitem):
             cartitem = CartItem.objects.get(product=product)
             cartitem.quantity += 1
             cartitem.save()
-     
         messages.success(request, "Product add to cart!")
         return redirect(reverse('products_category', args=(product.category.name,)))
 
