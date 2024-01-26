@@ -40,4 +40,5 @@ def my_cart(request):
     else:
         my_cart = Cart.objects.get(user=request.user.id)    
         products_cart = CartItem.objects.filter(cart=my_cart.id)
-        return render(request, 'store/my_cart.html', {'products_cart': products_cart})
+        total = sum([product.total_price() for product in products_cart])
+        return render(request, 'store/my_cart.html', {'products_cart': products_cart, 'total': total})
