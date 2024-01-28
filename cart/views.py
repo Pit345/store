@@ -27,6 +27,15 @@ def my_cart(request):
         total = sum([product.total_price() for product in products_cart])
         return render(request, 'cart/my_cart.html', {'products_cart': products_cart, 'total': total})
 
-def delete_from_cart(request, product_id):
+def delete_all(request, product_id):
     CartItem.objects.get(id=product_id).delete()
     return redirect(reverse('my_cart'))
+
+def delete_unit(request, product_id):
+    product = CartItem.objects.get(id=product_id)
+    if product.quantity <= 1:
+        delete_all(request, product_id)
+        return redirect(reverse('my_cart'))
+    else:
+        CartItem.objects.filter(id=product_id).update(quantity=F('quantity') - 1)
+        return redirect(reverse('my_cart'))
