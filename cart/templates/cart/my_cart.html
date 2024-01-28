@@ -1,0 +1,27 @@
+{% if products_cart %}
+<table>
+      <tr>
+        <th>Title</th>
+        <th>Quantity</th>
+        <th>Unit price</th>
+        <th>Total price</th>
+      </tr>
+
+    <tbody>
+        {% for product_in_cart in products_cart %}
+            <tr>
+                <td>{{product_in_cart.product.title.capitalize}}</td>
+                <td>{{product_in_cart.quantity}}</td>
+                <td>${{product_in_cart.product.price}}</td>
+                <td>${{product_in_cart.total_price}}</td>
+                <td><a href="{% url 'delete_from_cart' product_in_cart.id %}"> delete all </a></td>
+            </tr>
+        {% endfor %}
+    </table>
+</tbody>
+    <h3>Sum: {{total}}</h3>
+    {% else %}
+        <h3> The cart is empty </h3>
+{% endif %}
+
+<a href="{% url 'all_categories' %}">Back</a>
