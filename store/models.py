@@ -8,10 +8,7 @@ class Cart(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
-
-    def name_to_url(self):
-        return self.name.replace(' ', '-')
-
+    
 class Product(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()

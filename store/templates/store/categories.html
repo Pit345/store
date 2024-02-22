@@ -1,7 +1,7 @@
 <table class="text">
     {% for category in categories %}
     <tr>
-        <td><a href="{% url 'products_category' category_url=category.name_to_url %}">{{category.name.upper}}</a></td>
+        <td><a href="{% url 'products_category' category.id %}">{{category.name.upper}}</a></td>
     </tr>
     {% endfor %}
 </table>

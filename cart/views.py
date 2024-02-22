@@ -16,7 +16,7 @@ def add_to_cart(request, product_id):
         if CartItem.objects.contains(cartitem):
             CartItem.objects.filter(product=product).update(quantity=F('quantity') + 1)
         messages.success(request, "Product add to cart!")
-        return redirect(reverse('products_category', args=(product.category.name,)))
+        return redirect(reverse('products_category', args=(product.category.id,)))
 
 def my_cart(request):
     if not request.user.is_authenticated:
