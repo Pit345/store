@@ -8,6 +8,8 @@ class Cart(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=250, db_index=True, unique=True, verbose_name='URL')
+
     
 class Product(models.Model):
     title = models.CharField(max_length=100)
