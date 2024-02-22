@@ -7,7 +7,7 @@
 <table>
     {% for product in products %}
         <tr>
-            <td><a href=" {% url 'view_product' product.id %} ">{{product.title.capitalize }}</a></td>
+            <td><a href=" {% url 'view_product' product.slug %} ">{{product.title.capitalize }}</a></td>
             <td><a href=" {% url 'add_to_cart' product.id %} ">Add to cart</a></td>
         </tr>
     {% endfor %}

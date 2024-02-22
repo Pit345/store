@@ -11,11 +11,10 @@ def all_categories(request):
     return render(request, 'store/categories.html', {'categories': categories})
 
 def products_category(request, category_slug):
-    #breakpoint()
     category = Category.objects.get(slug=category_slug)
     products = category.product_set.all()
     return render(request, 'store/products_category.html', {'products': products})
     
-def view_product(request, product_id):
-    product = Product.objects.get(id=product_id)
+def view_product(request, product_slug):
+    product = Product.objects.get(slug=product_slug)
     return render(request, 'store/view_product.html', {'product': product})
