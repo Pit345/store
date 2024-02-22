@@ -19,6 +19,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(decimal_places=2, max_digits=1_000_000)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=250, db_index=True, verbose_name='URL')
 
     def __str__(self):
         return self.title
