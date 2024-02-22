@@ -10,8 +10,9 @@ def all_categories(request):
     categories = Category.objects.all()
     return render(request, 'store/categories.html', {'categories': categories})
 
-def products_category(request, category_id):
-    category = Category.objects.get(id=category_id)
+def products_category(request, category_slug):
+    #breakpoint()
+    category = Category.objects.get(slug=category_slug)
     products = category.product_set.all()
     return render(request, 'store/products_category.html', {'products': products})
     
