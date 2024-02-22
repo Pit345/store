@@ -2,4 +2,4 @@
 <p>{{ product.description }}</p>
 <p>'$' {{ product.price }}</p>
 
-<a href="{% url 'products_category' product.category.name %}"> Back </a>
+<a href="{% url 'products_category' product.category.id %}"> Back </a>
