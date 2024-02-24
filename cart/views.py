@@ -3,21 +3,21 @@ from store.models import Product, User, CartItem, Category, Cart
 from django.contrib import messages
 from django.urls import reverse
 from django.db.models import F
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required
 def add_to_cart(request, product_id):
-    if not request.user.is_authenticated:
-        return redirect(reverse('signin'))
-    else:
-        cart_obj, cart_create = Cart.objects.get_or_create(user = request.user)
-        product = Product.objects.get(id=product_id)
-        cartitem, cartitem_create = CartItem.objects.get_or_create(cart=cart_obj, product=product)
-        if CartItem.objects.contains(cartitem):
-            CartItem.objects.filter(product=product).update(quantity=F('quantity') + 1)
-        messages.success(request, "Product add to cart!")
-        return redirect(reverse('products_category', args=(product.category.slug,)))
+    cart_obj, cart_create = Cart.objects.get_or_create(user = request.user)
+    product = Product.objects.get(id=product_id)
+    cartitem, cartitem_create = CartItem.objects.get_or_create(cart=cart_obj, product=product)
+    if CartItem.objects.contains(cartitem):
+        CartItem.objects.filter(product=product).update(quantity=F('quantity') + 1)
+    messages.success(request, "Product add to cart!")
+    return redirect(reverse('products_category', args=(product.category.slug,)))
 
+@login_required
 def my_cart(request):
     if not request.user.is_authenticated:
         return redirect(reverse('signin'))
@@ -27,10 +27,12 @@ def my_cart(request):
         total = sum([product.total_price() for product in products_cart])
         return render(request, 'cart/my_cart.html', {'products_cart': products_cart, 'total': total})
 
+@login_required
 def delete_all(request, product_id):
     CartItem.objects.get(id=product_id).delete()
     return redirect(reverse('my_cart'))
 
+@login_required
 def delete_unit(request, product_id):
     product = CartItem.objects.get(id=product_id)
     if product.quantity <= 1:

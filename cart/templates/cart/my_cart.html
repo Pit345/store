@@ -19,9 +19,11 @@
         {% endfor %}
     </table>
 
-    <h3>Sum: {{total}}</h3>
+    <h3>Sum: $ {{total}}</h3>
     {% else %}
         <h3> The cart is empty </h3>
 {% endif %}
 
 <a href="{% url 'all_categories' %}">Back</a>
+
+<p align="right"> <a href="{% url 'create_order' %}"> Placing an order </a></p>

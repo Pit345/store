@@ -27,7 +27,25 @@ class Product(models.Model):
 class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.PositiveIntegerField(default=1)
 
     def total_price(self):
         return self.quantity * self.product.price
+
+class Order(models.Model):
+
+    PAYMENT_METHOD = [
+        ('cash_courier', 'Наличными курьеру'),
+        ('card_courier', 'Картой курьеру'),
+        ('card_online', 'Картой онлайн'),]
+
+    name = models.CharField(max_length=250)
+    phone_number = models.CharField(max_length=250)
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class OrderItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    price = models.DecimalField(decimal_places=2, max_digits=1_000_000)
+    quantity = models.PositiveIntegerField(default=1)
