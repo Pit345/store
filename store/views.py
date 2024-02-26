@@ -38,5 +38,6 @@ def create_order(request):
             for cart_item in cart.cartitem_set.all():
                 OrderItem.objects.create(order=order, product=cart_item.product, 
                                          quantity = cart_item.quantity, price=cart_item.product.price)
+                CartItem.objects.filter(product=cart_item.product).delete() #удалить из cart_item то что попало в order_item
 
-            return redirect(reverse('my_cart'))
+            return redirect(reverse('all_categories'))
