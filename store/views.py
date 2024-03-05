@@ -1,26 +1,26 @@
-from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from store.models import Product, User, CartItem, Category, Cart
+from django.shortcuts import render, redirect, get_object_or_404
+from store.models import Product, CartItem, Category, Cart
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
 from .forms import OrderForm
 from .models import *
+from django.views import generic
 
 # Create your views here.
 
-def all_categories(request):
-    categories = Category.objects.all()
-    return render(request, 'store/categories.html', {'categories': categories})
+class ListCategories(generic.ListView):
+    model = Category
+    template_name = 'store/category_list.html'
 
 def products_category(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)
     products = category.product_set.all()
     return render(request, 'store/products_category.html', {'products': products})
     
-def view_product(request, product_slug):
-    product = Product.objects.get(slug=product_slug)
-    return render(request, 'store/view_product.html', {'product': product})
+class DetailProduct(generic.DetailView):
+    model = Product
+    template_name = 'store/view_product.html'
 
 def create_order(request):
     if request.method == 'GET':
@@ -38,6 +38,6 @@ def create_order(request):
             for cart_item in cart.cartitem_set.all():
                 OrderItem.objects.create(order=order, product=cart_item.product, 
                                          quantity = cart_item.quantity, price=cart_item.product.price)
-                CartItem.objects.filter(product=cart_item.product).delete() #удалить из cart_item то что попало в order_item
+                CartItem.objects.filter(product=cart_item.product).delete()
 
             return redirect(reverse('all_categories'))

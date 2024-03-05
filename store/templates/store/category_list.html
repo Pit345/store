@@ -1,5 +1,5 @@
 <table class="text">
-    {% for category in categories %}
+    {% for category in category_list %}
     <tr>
         <td><a href="{% url 'products_category' category.slug %}">{{category.name.upper}}</a></td>
     </tr>
